@@ -1,0 +1,139 @@
+# Mindful Moments 🧘‍♀️
+
+## 1. Product Overview  
+
+**Purpose:**  
+Mindful Moments is a calm, supportive mindfulness agent built for ChatGPT.  
+It helps users take short, meaningful breaks during the day with breathing exercises, guided meditations, and uplifting affirmations.  
+
+**Goals:**  
+- Encourage small daily mindfulness habits.  
+- Improve focus, sleep, and emotional balance.  
+- Make mindfulness accessible inside ChatGPT without any app install.  
+
+**Success Metrics (KPIs):**  
+- Daily active users (DAU)  
+- Completed mindfulness sessions  
+- 7-day retention  
+- Streak length  
+
+---
+
+## 2. Target Audience  
+
+**Who it’s for:**  
+- Busy professionals needing stress relief between tasks  
+- Students seeking focus before studying  
+- Parents/caregivers looking for short relaxation moments  
+- Beginners exploring mindfulness for the first time  
+
+---
+
+## 3. Core Features (MVP)  
+
+✅ Daily breathing exercises (1–5 minutes)  
+✅ Guided meditations (short and long)  
+✅ Daily motivational quotes & affirmations  
+✅ Habit tracker & streaks  
+✅ Search by goal (focus, stress, sleep) and duration  
+✅ In-chat reminders via ChatGPT Apps SDK  
+
+---
+
+## 4. Content Sources  
+
+**Sources:**  
+- Public-domain or CC-BY meditation scripts  
+- AI-generated non-clinical content for short routines  
+- Curated local dataset of affirmations and quotes  
+
+**Each session includes:**  
+- Title  
+- Type (breathing / meditation / quote)  
+- Duration  
+- Tags  
+- Difficulty  
+- Language  
+
+---
+
+## 5. System & Architecture  
+
+**Built with:**  
+- OpenAI **Agents SDK** (intent logic)  
+- OpenAI **Apps SDK** (ChatGPT interface)  
+- **Cursor AI** for local testing and development  
+
+**Agent Intents:**  
+
+| Intent | Example Prompt |
+|--------|----------------|
+| `start_breathwork` | “I need a 3-minute breathing exercise.” |
+| `play_meditation` | “Play a 10-minute sleep meditation.” |
+| `get_quote` | “Give me a calming quote.” |
+| `track_progress` | “Mark today’s session complete.” |
+| `set_reminder` | “Remind me to meditate tonight at 9.” |
+
+---
+
+## 6. Personality & Prompting  
+
+**System Prompt:**  
+You are *Mindful Moments*, a gentle mindfulness companion.  
+You provide calming, encouraging responses with a non-medical tone.  
+You never diagnose or offer therapeutic or crisis advice.  
+Your tone is warm, supportive, and brief — ideal for daily check-ins and mini routines.  
+
+---
+
+## 7. Safety & Privacy  
+
+- No clinical or crisis-related advice  
+- Age restriction: 13+  
+- Include crisis hotline info for US / CA / UK / AU  
+- Follow privacy by design: minimal data, no personal journaling stored  
+
+**Crisis Template:**  
+> “I’m here to help you breathe and relax, but if you feel unsafe or in distress, please contact a trusted person or your local helpline.”  
+
+---
+
+## 8. User Flow  
+
+1️⃣ **Home** → “Today’s Routine”  
+2️⃣ **Choose** meditation or breathing exercise  
+3️⃣ **Complete** session → see affirmation  
+4️⃣ **Progress** page shows streaks and completed days  
+5️⃣ **Explore** → filter by goal or duration  
+
+**Empty State:**  
+> “Let’s begin with a 2-minute focus breath.”  
+
+---
+
+## 9. Evaluation  
+
+**Acceptance Criteria:**  
+- Users can complete at least one session per day  
+- Mindful reminders appear naturally in chat  
+- Agent never gives medical advice  
+- Streak tracking works reliably  
+
+**Example Test Prompts:**  
+- “Play a short meditation for focus.”  
+- “Give me a daily affirmation.”  
+- “Remind me to breathe every morning.”  
+
+---
+
+## 10. Future Additions  
+
+🔹 Journaling & reflection page  
+🔹 Push/email reminders  
+🔹 Multi-language support (Persian next)  
+🔹 Personalized AI routine recommendations  
+🔹 Basic analytics dashboard  
+
+---
+
+✨ *End of Mindful Moments agent.md*
