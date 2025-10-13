@@ -9,7 +9,7 @@ app = FastAPI(
 
 @app.get("/")
 def home():
-    return {"message": "Mindful Moments API is running"}
+    return {"message": "Mindful Moments API is running successfully 🎉"}
 
 @app.get("/quote")
 def quote():
@@ -22,5 +22,3 @@ def breathwork():
 @app.get("/progress")
 def progress():
     return {"progress": track_progress()}
-
-

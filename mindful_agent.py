@@ -1,47 +1,30 @@
-import json
 import random
-from datetime import datetime
 
-# 🧘 Quotes dataset
-quotes = [
-    "You are not your thoughts.",
-    "Just breathe. Everything is okay.",
-    "Let go of what you can’t control.",
-    "Inhale calm, exhale stress.",
-    "You are enough, exactly as you are."
+QUOTES = [
+    "Take a deep breath. You are doing great.",
+    "Be present. You are exactly where you need to be.",
+    "Calm is your superpower.",
+    "Inhale peace, exhale tension."
 ]
 
-# 🗂 محل ذخیره داده‌ها
-DATA_FILE = "data.json"
+BREATHWORKS = [
+    {"inhale": 4, "hold": 4, "exhale": 4},
+    {"inhale": 4, "hold": 7, "exhale": 8}
+]
 
-def load_data():
-    try:
-        with open(DATA_FILE, "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {"streak": 0, "last_session": None}
+PROGRESS = {"streak": 3, "total_sessions": 12}
 
-def save_data(data):
-    with open(DATA_FILE, "w") as f:
-        json.dump(data, f)
 
-# 🎯 Intent 1: جمله آرام‌بخش
 def get_quote():
-    return random.choice(quotes)
+    """Return a random mindfulness quote"""
+    return random.choice(QUOTES)
 
-# 🧘 Intent 2: تمرین تنفس
+
 def start_breathwork():
-    return "🫁 Let’s do 2 minutes of box breathing.\nInhale 4s → Hold 4s → Exhale 4s → Hold 4s.\nRepeat 4 times."
+    """Return a random breathing exercise"""
+    return random.choice(BREATHWORKS)
 
-# 📆 Intent 3: پیگیری پیشرفت
+
 def track_progress():
-    data = load_data()
-    today = datetime.now().strftime("%Y-%m-%d")
-
-    if data["last_session"] != today:
-        data["streak"] += 1
-        data["last_session"] = today
-        save_data(data)
-        return f"✅ Great job! You’ve completed {data['streak']} day(s) in a row!"
-    else:
-        return "🌼 You already completed today’s session — great consistency!"
+    """Return current progress stats"""
+    return PROGRESS
