@@ -4,7 +4,10 @@ from mindful_agent import get_quote, start_breathwork, track_progress
 app = FastAPI(
     title="Mindful Moments API",
     description="API for the Mindful Moments Agent (quotes, breathing, and progress tracking).",
-    version="1.0.0"
+    version="1.0.0",
+    servers=[
+        {"url": "https://mindful-moments-1txj.onrender.com"}  # 👈 add your Render URL here
+    ]
 )
 
 @app.get("/")
