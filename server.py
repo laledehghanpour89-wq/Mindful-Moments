@@ -9,11 +9,14 @@ app = FastAPI(
 )
 
 # =========================
-# 🌐 Enable CORS (for frontend access)
+# 🌐 Enable CORS (Frontend ↔ Backend)
 # =========================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # ✅ برای تست همه مجازن (بعداً می‌تونی محدودش کنی)
+    allow_origins=[
+        "https://mindful-moments-ui.onrender.com",  # 🌸 فقط دامنه‌ی UI مجازه
+        "http://localhost:8501"                     # برای تست محلی Streamlit
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
