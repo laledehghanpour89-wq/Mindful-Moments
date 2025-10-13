@@ -1,101 +1,89 @@
 import streamlit as st
 import requests
 
-# 🌿 آدرس API شما روی Render (لینک FastAPI)
-API_BASE = "https://mindful-moments-1txj.onrender.com"
+# ======================
+# 🌿 Basic Page Setup
+# ======================
+st.set_page_config(
+    page_title="Mindful Moments",
+    page_icon="🌸",
+    layout="centered"
+)
 
-# 🌸 تنظیمات صفحه
-st.set_page_config(page_title="Mindful Moments", page_icon="🌸", layout="centered")
+API_BASE = "https://mindful-moments-1txj.onrender.com"  # 👈 آدرس backend خودت رو بذار
 
-# 🎨 استایل سفارشی برای ظاهر نرم و آرامش‌بخش
-st.markdown("""
-    <style>
-    body {
-        background-color: #fafafa;
-    }
-    img {
-        border-radius: 20px;
-    }
-    .stButton>button {
-        background-color: #C1E1C1;
-        color: black;
-        font-weight: 600;
-        border-radius: 10px;
-        height: 3em;
-        width: 12em;
-    }
-    .stButton>button:hover {
-        background-color: #A3D9A5;
-        color: black;
-    }
-    h1, h2, h3 {
-        text-align: center;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# ======================
+# 🌼 Sidebar Menu
+# ======================
+st.sidebar.title("🌸 Choose an activity")
+menu = st.sidebar.radio("Go to", ["Home", "Calming Quote", "Breathwork", "Track Progress"])
 
-# 🌿 عنوان اصلی برنامه
-st.title("🌿 Mindful Moments")
-st.write("A gentle space for quotes, breathing, and reflection 🌸")
-
-# 🎋 منوی سمت چپ
-menu = st.sidebar.radio("🪷 Choose an activity", ["Home", "Calming Quote", "Breathwork", "Track Progress"])
-
-# 🏡 صفحه‌ی اصلی (Home)
+# ======================
+# 🏠 HOME PAGE
+# ======================
 if menu == "Home":
-    st.header("Welcome 🌷")
-    st.write("Take a deep breath, center yourself, and enjoy your mindful journey 🌞")
-    
-    # 🌄 عکس از Unsplash (نسخه جدید بدون هشدار)
+    st.markdown("## 🌿 Mindful Moments")
+    st.markdown("A gentle space for quotes, breathing, and reflection 🌷")
+    st.markdown("---")
+    st.markdown("### Welcome 🌺")
+    st.markdown("Take a deep breath, center yourself, and enjoy your mindful journey 🧘‍♀️")
+
     st.image(
         "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-        use_container_width=True
+        use_column_width=True
     )
 
-# 🌸 صفحه نقل‌قول‌ها
+# ======================
+# 🌞 CALMING QUOTE
+# ======================
 elif menu == "Calming Quote":
-    st.header("✨ Calming Quote")
-    if st.button("Give me a calming quote"):
-        try:
-            res = requests.get(f"{API_BASE}/quote")
-            if res.status_code == 200:
-                data = res.json()
-                st.success(f"💬 {data.get('quote', 'No quote found.')}")
-            else:
-                st.error(f"Error {res.status_code}: {res.text}")
-        except Exception:
-            st.error("⚠️ Could not connect to the API. Please check your internet or API link.")
+    st.header("💬 Calming Quote")
+    try:
+        res = requests.get(f"{API_BASE}/quote")
+        if res.status_code == 200:
+            data = res.json()
+            st.success(f"✨ *{data['quote']}* — {data['author']}")
+        else:
+            st.error("Couldn't fetch a quote. Try again later 🌱")
+    except Exception:
+        st.warning("⚠️ Unable to connect to quote service.")
 
-# 🌬️ صفحه تمرین تنفس
+# ======================
+# 🌬️ BREATHWORK
+# ======================
 elif menu == "Breathwork":
     st.header("🧘‍♀️ Guided Breathwork")
-    if st.button("Start a short breathing exercise"):
-        try:
-            res = requests.get(f"{API_BASE}/breathwork")
-            if res.status_code == 200:
-                data = res.json()
-                st.info(f"🫁 {data.get('exercise', 'No exercise found.')}")
-            else:
-                st.error(f"Error {res.status_code}: {res.text}")
-        except Exception:
-            st.error("⚠️ Couldn't connect to API.")
+    st.markdown("Follow the rhythm — breathe in calm, breathe out tension 💨")
+    st.image(
+        "https://images.unsplash.com/photo-1557683316-973673baf926",
+        caption="Breathe deeply and slowly 🌬️",
+        use_column_width=True
+    )
+    st.info("🕊️ Try: Inhale 4s — Hold 4s — Exhale 4s — Rest 4s")
 
-# 📈 صفحه پیشرفت کاربر
+# ======================
+# 📊 TRACK PROGRESS
+# ======================
 elif menu == "Track Progress":
-    st.header("📊 Track Your Progress")
+    st.header("📈 Track Your Progress")
+
     user_id = st.text_input("Enter your user ID:", placeholder="e.g. laleh")
-    
     if st.button("Show Progress"):
         if user_id:
             try:
                 res = requests.get(f"{API_BASE}/progress", params={"user_id": user_id})
                 if res.status_code == 200:
                     data = res.json()
-                    st.success("Here's your progress 💚")
                     st.json(data)
                 else:
-                    st.error(f"Error fetching progress: {res.status_code}")
+                    st.error("Error fetching progress.")
             except Exception:
-                st.error("⚠️ Error connecting to server.")
+                st.warning("⚠️ Unable to reach the progress API.")
         else:
-            st.warning("Please enter your user ID.")
+            st.warning("Please enter your user ID 🙏")
+
+# ======================
+# 💖 Footer
+# ======================
+st.markdown("---")
+st.caption("Made with love 🌸 | A space to nurture mindfulness and peace ✨")
