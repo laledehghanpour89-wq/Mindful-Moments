@@ -21,4 +21,6 @@ def breathwork():
 
 @app.get("/progress")
 def progress():
-    return {"status": track_progress()}
+    return {"progress": track_progress()}
+
+
