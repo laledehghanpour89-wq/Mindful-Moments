@@ -1,7 +1,11 @@
 services:
   - type: web
-    name: mindful-moments-app
+    name: mindful-moments-ui
     env: python
-    plan: starter
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python -m streamlit run app.py --server.port 10000 --server.address 0.0.0.0"
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.4

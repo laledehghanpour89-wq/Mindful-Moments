@@ -1,17 +1,6 @@
-# === Backend (FastAPI) ===
-fastapi==0.119.0
-uvicorn==0.37.0
-
-# === Frontend (Streamlit App) ===
-streamlit==1.39.0
-
-# === Utilities ===
+streamlit==1.38.0
 requests==2.32.3
-pydantic==2.12.0
-typing-extensions==4.15.0
-anyio==4.11.0
-starlette==0.48.0
-click==8.1.7
-h11==0.16.0
-idna==3.11
-sniffio==1.3.1
+typing-extensions>=4.8.0,<4.14.0
+fastapi==0.110.0
+uvicorn==0.29.0
+pydantic==2.5.3
