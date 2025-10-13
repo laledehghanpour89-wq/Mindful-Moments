@@ -1,48 +1,56 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mindful_agent import get_quote, start_breathwork, track_progress
 
 app = FastAPI(
     title="Mindful Moments API",
     description="API for the Mindful Moments Agent (quotes, breathing, and progress tracking).",
-    version="1.0.0",
+    version="1.0.0"
 )
 
-# CORS آزاد (برای GPT و هر کلاینتی)
+# =========================
+# 🌐 Enable CORS (for frontend access)
+# =========================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # ✅ برای تست همه مجازن (بعداً می‌تونی محدودش کنی)
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# =========================
+# 🌸 ROUTES
+# =========================
 @app.get("/")
 def home():
-    return {"message": "Mindful Moments API is running"}
+    return {"message": "Mindful Moments API is running 💖"}
 
 @app.get("/quote")
 def quote():
-    return {"quote": get_quote()}
+    """Return a calming mindfulness quote"""
+    try:
+        data = get_quote()
+        return {"quote": data.get("quote", "Take a deep breath and relax."), "author": data.get("author", "Unknown")}
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.get("/breathwork")
 def breathwork():
-    return {"exercise": start_breathwork()}
+    """Start a breathing exercise"""
+    try:
+        exercise = start_breathwork()
+        return {"exercise": exercise}
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.get("/progress")
-def progress(user_id: str = Query(..., description="Unique user id")):
-    """
-    نمونه: /progress?user_id=laleh
-    """
+def progress(user_id: str = None):
+    """Track user’s mindfulness progress"""
+    if not user_id:
+        return {"error": "Missing user_id"}
     try:
-        result = track_progress(user_id)
-        return result
+        progress_data = track_progress(user_id)
+        return {"user_id": user_id, "progress": progress_data}
     except Exception as e:
-        # لاگ شفاف برای Render
-        print("ERROR in /progress:", repr(e))
-        # پاسخ استاندارد
-        return {"error": "internal_error", "detail": str(e)}
-
-# healthcheck برای Render (اختیاری)
-@app.get("/healthz")
-def health():
-    return {"ok": True}
+        return {"error": str(e)}
