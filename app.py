@@ -14,7 +14,7 @@ st.title("🌿 Mindful Moments")
 st.write("A gentle space for quotes, breathing, and reflection 🌸")
 
 # ===============================
-# 🔎 Helper: safe GET
+# 🔎 Helper: Safe GET request
 # ===============================
 def api_get(path: str, params: dict | None = None, timeout: int = 10):
     try:
@@ -24,37 +24,38 @@ def api_get(path: str, params: dict | None = None, timeout: int = 10):
         return None, {"error": str(e)}
 
 # ===============================
-# 🔌 API Status (always visible)
+# 🔌 API Status (hidden but active)
 # ===============================
-status_code, status_payload = api_get("/")
-col1, col2 = st.columns([1, 4])
-with col1:
-    if status_code == 200:
-        st.success("API: Online")
-    elif status_code is None:
-        st.error("API: Unreachable")
-    else:
-        st.warning(f"API: {status_code}")
-with col2:
-    if isinstance(status_payload, dict) and "message" in status_payload:
-        st.caption(status_payload["message"])
-
-st.divider()
+# status_code, status_payload = api_get("/")
+# # بخش زیر بررسی سلامت API را انجام می‌دهد اما نمایش نمی‌دهد.
+# # اگر خواستی بعداً دوباره نمایش بدهی، علامت # را از این قسمت‌ها بردار.
+# # col1, col2 = st.columns([1, 4])
+# # with col1:
+# #     if status_code == 200:
+# #         st.success("API: Online")
+# #     elif status_code is None:
+# #         st.error("API: Unreachable")
+# #     else:
+# #         st.warning(f"API: {status_code}")
+# # with col2:
+# #     if isinstance(status_payload, dict) and "message" in status_payload:
+# #         st.caption(status_payload["message"])
+# # st.divider()
 
 # ===============================
-# 🧭 Tabs (visible even without sidebar)
+# 🧭 Tabs
 # ===============================
 tab_home, tab_quote, tab_breath, tab_progress = st.tabs(
     ["🏠 Home", "💬 Calming Quote", "🌬️ Breathwork", "📈 Progress"]
 )
 
 # ===============================
-# 🏠 HOME (with a button too)
+# 🏠 HOME
 # ===============================
 with tab_home:
     st.subheader("Welcome 🌸")
     st.write("Take a deep breath, center yourself, and enjoy your mindful journey 🧘‍♀️")
-    # تصویر اختیاری — اگر قبلاً دردسر داشت حذفش کن
+
     st.image(
         "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
         use_column_width=True,
