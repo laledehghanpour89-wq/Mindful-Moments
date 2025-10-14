@@ -2,16 +2,17 @@ import streamlit as st
 import requests
 
 # ===============================
-# 🌐 Backend API (Render)
+# 🌐 Backend API
 # ===============================
-API_BASE = "https://mindful-moments-1txj.onrender.com"  # آدرس بک‌اند خودت
+API_BASE = "https://mindful-moments-1txj.onrender.com"  # آدرس API بک‌اندت
 
 # ===============================
 # ⚙️ Page Setup
 # ===============================
 st.set_page_config(page_title="Mindful Moments", page_icon="🌿", layout="centered")
+
 st.title("🌿 Mindful Moments")
-st.write("A gentle space for quotes, breathing, and reflection 🌸")
+st.caption("Find calm, breathe deeply, and stay mindful wherever you are 🌸")
 
 # ===============================
 # 🔎 Helper: Safe GET request
@@ -24,107 +25,99 @@ def api_get(path: str, params: dict | None = None, timeout: int = 10):
         return None, {"error": str(e)}
 
 # ===============================
-# 🔌 API Status (hidden but active)
+# 🧭 Sidebar Navigation
 # ===============================
-# status_code, status_payload = api_get("/")
-# # بخش زیر بررسی سلامت API را انجام می‌دهد اما نمایش نمی‌دهد.
-# # اگر خواستی بعداً دوباره نمایش بدهی، علامت # را از این قسمت‌ها بردار.
-# # col1, col2 = st.columns([1, 4])
-# # with col1:
-# #     if status_code == 200:
-# #         st.success("API: Online")
-# #     elif status_code is None:
-# #         st.error("API: Unreachable")
-# #     else:
-# #         st.warning(f"API: {status_code}")
-# # with col2:
-# #     if isinstance(status_payload, dict) and "message" in status_payload:
-# #         st.caption(status_payload["message"])
-# # st.divider()
-
-# ===============================
-# 🧭 Tabs
-# ===============================
-tab_home, tab_quote, tab_breath, tab_progress = st.tabs(
-    ["🏠 Home", "💬 Calming Quote", "🌬️ Breathwork", "📈 Progress"]
+st.sidebar.title("🧘 Navigation")
+page = st.sidebar.radio(
+    "Choose a section:",
+    ["Home", "Calming Quote", "Breathwork", "Progress"],
+    index=0,
 )
 
 # ===============================
 # 🏠 HOME
 # ===============================
-with tab_home:
-    st.subheader("Welcome 🌸")
-    st.write("Take a deep breath, center yourself, and enjoy your mindful journey 🧘‍♀️")
+if page == "Home":
+    st.header("Welcome 🌸")
+    st.write("Take a deep breath, center yourself, and enjoy your mindful journey 🕊️")
 
     st.image(
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80",
         use_column_width=True,
     )
 
-    st.markdown("### Quick action")
-    if st.button("✨ Give me a calming quote (here)"):
+    st.markdown("### Quick Start")
+    if st.button("✨ Give me a calming quote"):
         code, data = api_get("/quote")
         if code == 200 and isinstance(data, dict):
             st.success(f"_{data.get('quote', 'Take a deep breath…')}_")
             st.caption(f"— {data.get('author', 'Unknown')}")
-        elif code is None:
-            st.error("Could not reach API.")
-            st.code(data, language="json")
         else:
-            st.warning(f"Server responded with {code}")
-            st.code(data, language="json")
+            st.error("Could not reach API or server returned an error.")
 
 # ===============================
 # 💬 QUOTE
 # ===============================
-with tab_quote:
-    st.subheader("Calming Quote")
-    if st.button("Get a Calming Quote"):
+elif page == "Calming Quote":
+    st.header("💬 Calming Quote")
+    st.write("Need a moment of calm? Click below to receive a mindful quote 🌿")
+
+    if st.button("Get Quote"):
         code, data = api_get("/quote")
         if code == 200 and isinstance(data, dict):
-            st.success(f"_{data.get('quote', 'Take a deep breath…')}_")
+            st.info(f"_{data.get('quote', 'Take a deep breath…')}_")
             st.caption(f"— {data.get('author', 'Unknown')}")
-        elif code is None:
-            st.error("Could not reach API.")
-            st.code(data, language="json")
         else:
-            st.warning(f"Server responded with {code}")
-            st.code(data, language="json")
+            st.warning("Could not retrieve quote from API.")
 
 # ===============================
 # 🌬️ BREATHWORK
 # ===============================
-with tab_breath:
-    st.subheader("Guided Breathwork")
-    st.write("Follow along this short breathing routine to find calm 🌤️")
+elif page == "Breathwork":
+    st.header("🌬️ Guided Breathwork")
+    st.write("Breathe in... Breathe out... Let go of the tension 💫")
+
     if st.button("Start Breathing Exercise"):
         code, data = api_get("/breathwork")
         if code == 200 and isinstance(data, dict):
             st.info(data.get("exercise", "Inhale… Exhale…"))
-        elif code is None:
-            st.error("Could not reach API.")
-            st.code(data, language="json")
         else:
-            st.warning(f"Server responded with {code}")
-            st.code(data, language="json")
+            st.error("Could not load breathing exercise.")
 
 # ===============================
 # 📈 PROGRESS
 # ===============================
-with tab_progress:
-    st.subheader("Track Your Mindfulness Progress")
-    user_id = st.text_input("User ID", placeholder="e.g. laleh")
-    if st.button("Show Progress"):
-        if not user_id:
-            st.warning("Please enter a user ID.")
-        else:
-            code, data = api_get("/progress", params={"user_id": user_id})
-            if code == 200:
-                st.success("Progress loaded")
-                st.code(data, language="json")
-            elif code is None:
-                st.error("Could not reach API.")
-                st.code(data, language="json")
+elif page == "Progress":
+    st.header("📈 Mindfulness Progress Tracker")
+    st.write("Track your daily mindfulness journey 🌱")
+
+    user_id = st.text_input("Enter your User ID", placeholder="e.g. laleh")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Show Progress"):
+            if not user_id:
+                st.warning("Please enter a user ID.")
             else:
-                st.warning(f"Server responded with {code}")
-                st.code(data, language="json")
+                code, data = api_get("/progress", params={"user_id": user_id})
+                if code == 200:
+                    sessions = data.get("sessions", 0)
+                    last_date = data.get("last_date", "N/A")
+                    st.success(f"Sessions: {sessions} | Last Session: {last_date}")
+                else:
+                    st.error("Could not retrieve progress data.")
+    with col2:
+        if st.button("Add Session"):
+            if not user_id:
+                st.warning("Please enter a user ID.")
+            else:
+                try:
+                    post = requests.post(f"{API_BASE}/progress", params={"user_id": user_id})
+                    if post.status_code == 200:
+                        result = post.json()
+                        st.success(f"Progress updated for {user_id} 🌿")
+                        st.json(result)
+                    else:
+                        st.error("Could not update progress.")
+                except Exception as e:
+                    st.error(f"Error: {e}")
