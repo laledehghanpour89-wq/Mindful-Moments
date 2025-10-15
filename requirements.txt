@@ -1,13 +1,8 @@
-# Core dependencies
 streamlit==1.38.0
 requests==2.31.0
-
-# Optional but useful dependencies
 pandas==2.3.3
 numpy==2.3.3
 altair==5.5.0
-
-# Backend compatibility (FastAPI API)
 fastapi==0.95.2
 uvicorn==0.21.1
 pydantic==1.10.13
