@@ -1,59 +1,47 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from mindful_agent import get_quote, start_breathwork, track_progress
+import random
 
 app = FastAPI(
     title="Mindful Moments API",
-    description="API for the Mindful Moments Agent (quotes, breathing, and progress tracking).",
+    description="A simple API that serves calming quotes and mindfulness support 🌿",
     version="1.0.0"
 )
 
-# =========================
-# 🌐 Enable CORS (Frontend ↔ Backend)
-# =========================
+# Allow requests from any origin (important for Render + Streamlit UI)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://mindful-moments-ui.onrender.com",  # 🌸 فقط دامنه‌ی UI مجازه
-        "http://localhost:8501"                     # برای تست محلی Streamlit
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# =========================
-# 🌸 ROUTES
-# =========================
-@app.get("/")
-def home():
-    return {"message": "Mindful Moments API is running 💖"}
+# ✅ Health check
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "message": "Mindful Moments API is running"}
+
+# ✅ Calming quotes list
+quotes = [
+    "Breathe deeply and let go.",
+    "Peace begins with a single breath.",
+    "You are right where you need to be.",
+    "Be present, be kind, be you.",
+    "Inhale calm, exhale stress.",
+    "Small steps lead to big peace."
+]
 
 @app.get("/quote")
-def quote():
-    """Return a calming mindfulness quote"""
-    try:
-        data = get_quote()
-        return {"quote": data.get("quote", "Take a deep breath and relax."), "author": data.get("author", "Unknown")}
-    except Exception as e:
-        return {"error": str(e)}
+def get_quote():
+    quote = random.choice(quotes)
+    return {"quote": quote}
 
-@app.get("/breathwork")
-def breathwork():
-    """Start a breathing exercise"""
-    try:
-        exercise = start_breathwork()
-        return {"exercise": exercise}
-    except Exception as e:
-        return {"error": str(e)}
-
-@app.get("/progress")
-def progress(user_id: str = None):
-    """Track user’s mindfulness progress"""
-    if not user_id:
-        return {"error": "Missing user_id"}
-    try:
-        progress_data = track_progress(user_id)
-        return {"user_id": user_id, "progress": progress_data}
-    except Exception as e:
-        return {"error": str(e)}
+# ✅ Root route (for quick API test)
+@app.get("/")
+def root():
+    return {
+        "message": "🌿 Welcome to Mindful Moments API!",
+        "routes": ["/", "/health", "/quote"],
+        "status": "online"
+    }
