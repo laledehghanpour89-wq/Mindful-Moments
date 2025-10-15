@@ -4,11 +4,11 @@ import random
 
 app = FastAPI(
     title="Mindful Moments API",
-    description="A simple API that serves calming quotes and mindfulness support 🌿",
+    description="A mindfulness API for quotes and simple breathing reminders 🌿",
     version="1.0.0"
 )
 
-# Allow requests from any origin (important for Render + Streamlit UI)
+# Allow all origins (for testing and UI connection)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,31 +17,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ✅ Health check
-@app.get("/health")
-def health_check():
-    return {"status": "ok", "message": "Mindful Moments API is running"}
-
-# ✅ Calming quotes list
-quotes = [
-    "Breathe deeply and let go.",
-    "Peace begins with a single breath.",
-    "You are right where you need to be.",
-    "Be present, be kind, be you.",
-    "Inhale calm, exhale stress.",
-    "Small steps lead to big peace."
-]
-
-@app.get("/quote")
-def get_quote():
-    quote = random.choice(quotes)
-    return {"quote": quote}
-
-# ✅ Root route (for quick API test)
 @app.get("/")
 def root():
     return {
-        "message": "🌿 Welcome to Mindful Moments API!",
-        "routes": ["/", "/health", "/quote"],
-        "status": "online"
+        "message": "🌿 Welcome to Mindful Moments API",
+        "available_routes": ["/", "/quote", "/health"]
     }
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "message": "API is running fine"}
+
+@app.get("/quote")
+def get_quote():
+    quotes = [
+        "Breathe deeply and let go.",
+        "Peace begins with a single breath.",
+        "You are right where you need to be.",
+        "Be present, be kind, be you."
+    ]
+    return {"quote": random.choice(quotes)}
