@@ -1,10 +1,9 @@
 services:
   - type: web
-    name: mindful-moments
+    name: mindful-moments-ui
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn server:app --host 0.0.0.0 --port 10000
-    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "streamlit run app.py --server.port=$PORT --server.address=0.0.0.0"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
